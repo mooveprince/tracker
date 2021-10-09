@@ -14,6 +14,7 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,16 +22,31 @@ import org.springframework.core.io.Resource;
 
 import com.wealth.stock.tracker.model.StockTracker;
 
+/**
+ * @author moove
+ *
+ */
 @Configuration
 @EnableBatchProcessing
 public class SpringBatchConfig {
 	
+	@Autowired
+	private JobBuilderFactory jobBuilderFactory;
+	
+	@Autowired
+	private StepBuilderFactory stepBuilderFactory;
+	
+	@Autowired
+	ItemReader<StockTracker> itemReader;
+	
+	@Autowired
+	ItemProcessor<StockTracker, StockTracker> itemProcessor;
+	
+	@Autowired
+	ItemWriter<StockTracker> itemWriter;
+	
 	@Bean
-	public Job job(JobBuilderFactory jobBuilderFactory, 
-			StepBuilderFactory stepBuilderFactory,
-			ItemReader<StockTracker> itemReader,
-			ItemProcessor<StockTracker, StockTracker> itemProcessor,
-			ItemWriter<StockTracker> itemWriter) {
+	public Job job() {
 		
 		Step step = stepBuilderFactory.get("Stock-Tracker-File-Load")
 					.<StockTracker, StockTracker>chunk(100)
@@ -80,6 +96,6 @@ public class SpringBatchConfig {
 		defaultLineMapper.setFieldSetMapper(fieldMapper);
 		
 		return defaultLineMapper;
-	}
+	} 
 
 }
