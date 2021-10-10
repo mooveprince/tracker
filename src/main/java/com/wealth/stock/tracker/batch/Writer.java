@@ -6,7 +6,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.wealth.stock.tracker.model.StockTracker;
+import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.repository.StockTrackerRepository;
 
 @Component

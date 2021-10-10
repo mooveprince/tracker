@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.wealth.stock.tracker.model.StockTracker;
+import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.model.StockTrackerInput;
 
 /**
@@ -63,11 +63,11 @@ public class SpringBatchConfig {
 	}
 	
 	@Bean
-	public FlatFileItemReader<StockTrackerInput> fileItemReader(@Value("${input}") Resource resource) {
+	public FlatFileItemReader<StockTrackerInput> fileItemReader() {
 		
 		FlatFileItemReader<StockTrackerInput> flatFileItemReader = new FlatFileItemReader<>();
 		
-		flatFileItemReader.setResource(resource);
+		//flatFileItemReader.setResource(resource);
 		flatFileItemReader.setName("CSV-File-Reader");
 		flatFileItemReader.setLinesToSkip(1);
 		

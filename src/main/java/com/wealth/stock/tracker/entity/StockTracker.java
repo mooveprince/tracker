@@ -1,4 +1,4 @@
-package com.wealth.stock.tracker.model;
+package com.wealth.stock.tracker.entity;
 
 import java.sql.Date;
 

@@ -7,7 +7,7 @@ import java.util.Date;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
-import com.wealth.stock.tracker.model.StockTracker;
+import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.model.StockTrackerInput;
 import com.wealth.stock.tracker.util.TrackerUtil;
 
