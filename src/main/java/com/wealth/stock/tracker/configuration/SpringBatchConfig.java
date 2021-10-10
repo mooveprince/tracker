@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import com.wealth.stock.tracker.model.StockTracker;
+import com.wealth.stock.tracker.model.StockTrackerInput;
 
 /**
  * @author moove
@@ -37,10 +38,10 @@ public class SpringBatchConfig {
 	private StepBuilderFactory stepBuilderFactory;
 	
 	@Autowired
-	ItemReader<StockTracker> itemReader;
+	ItemReader<StockTrackerInput> itemReader;
 	
 	@Autowired
-	ItemProcessor<StockTracker, StockTracker> itemProcessor;
+	ItemProcessor<StockTrackerInput, StockTracker> itemProcessor;
 	
 	@Autowired
 	ItemWriter<StockTracker> itemWriter;
@@ -49,7 +50,7 @@ public class SpringBatchConfig {
 	public Job job() {
 		
 		Step step = stepBuilderFactory.get("Stock-Tracker-File-Load")
-					.<StockTracker, StockTracker>chunk(100)
+					.<StockTrackerInput, StockTracker>chunk(100)
 					.reader(itemReader)
 					.processor(itemProcessor)
 					.writer(itemWriter)
@@ -62,9 +63,9 @@ public class SpringBatchConfig {
 	}
 	
 	@Bean
-	public FlatFileItemReader<StockTracker> fileItemReader(@Value("${input}") Resource resource) {
+	public FlatFileItemReader<StockTrackerInput> fileItemReader(@Value("${input}") Resource resource) {
 		
-		FlatFileItemReader<StockTracker> flatFileItemReader = new FlatFileItemReader<>();
+		FlatFileItemReader<StockTrackerInput> flatFileItemReader = new FlatFileItemReader<>();
 		
 		flatFileItemReader.setResource(resource);
 		flatFileItemReader.setName("CSV-File-Reader");
@@ -78,19 +79,19 @@ public class SpringBatchConfig {
 	
 	
 	@Bean
-	public LineMapper<StockTracker> lineMapper() {
+	public LineMapper<StockTrackerInput> lineMapper() {
 		
 		String[] header = {"quarter","stock","date","open","high","low","close","volume","percent_change_price","percent_change_volume_over_last_wk","previous_weeks_volume","next_weeks_open","next_weeks_close","percent_change_next_weeks_price","days_to_next_dividend","percent_return_next_dividend"};
 		
-		DefaultLineMapper<StockTracker> defaultLineMapper = new DefaultLineMapper<>();
+		DefaultLineMapper<StockTrackerInput> defaultLineMapper = new DefaultLineMapper<>();
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
 		
 		lineTokenizer.setDelimiter(",");
 		lineTokenizer.setStrict(false);
 		lineTokenizer.setNames(header);
 		
-		BeanWrapperFieldSetMapper<StockTracker> fieldMapper = new BeanWrapperFieldSetMapper<>();
-		fieldMapper.setTargetType(StockTracker.class);
+		BeanWrapperFieldSetMapper<StockTrackerInput> fieldMapper = new BeanWrapperFieldSetMapper<>();
+		fieldMapper.setTargetType(StockTrackerInput.class);
 		
 		defaultLineMapper.setLineTokenizer(lineTokenizer);
 		defaultLineMapper.setFieldSetMapper(fieldMapper);

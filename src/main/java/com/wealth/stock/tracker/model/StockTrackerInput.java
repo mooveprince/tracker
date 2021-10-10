@@ -1,23 +1,14 @@
 package com.wealth.stock.tracker.model;
 
-import java.sql.Date;
-
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 
-@Entity
-@IdClass(StockTrackerId.class)
-public class StockTracker {
-
-	@Id
+public class StockTrackerInput {
+	
 	private byte quarter;
 	
-	@Id
 	private String stock;
 	
-	@Id
-	private Date date;
+	private String date;
 	
 	private String open;
 	
@@ -27,23 +18,23 @@ public class StockTracker {
 	
 	private String close;
 	
-	private long volume;
+	private String volume;
 	
-	private float percentChangePrice;
+	private String percentChangePrice;
 	
-	private double percentChangeVolumeOverLastWk;
+	private String percentChangeVolumeOverLastWk;
 	
-	private long previousWeeksVolume;
+	private String previousWeeksVolume;
 	
 	private String nextWeeksOpen;
 	
 	private String nextWeeksClose;
 	
-	private float percentChangeNextWeeksPrice;
+	private String percentChangeNextWeeksPrice;
 	
-	private short daysToNextDividend;
+	private String daysToNextDividend;
 	
-	private float percentReturnNextDividend;
+	private String percentReturnNextDividend;
 
 	public byte getQuarter() {
 		return quarter;
@@ -61,11 +52,11 @@ public class StockTracker {
 		this.stock = stock;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -101,35 +92,35 @@ public class StockTracker {
 		this.close = close;
 	}
 
-	public long getVolume() {
+	public String getVolume() {
 		return volume;
 	}
 
-	public void setVolume(long volume) {
+	public void setVolume(String volume) {
 		this.volume = volume;
 	}
 
-	public float getPercentChangePrice() {
+	public String getPercentChangePrice() {
 		return percentChangePrice;
 	}
 
-	public void setPercentChangePrice(float percentChangePrice) {
+	public void setPercentChangePrice(String percentChangePrice) {
 		this.percentChangePrice = percentChangePrice;
 	}
 
-	public double getPercentChangeVolumeOverLastWk() {
+	public String getPercentChangeVolumeOverLastWk() {
 		return percentChangeVolumeOverLastWk;
 	}
 
-	public void setPercentChangeVolumeOverLastWk(double percentChangeVolumeOverLastWk) {
+	public void setPercentChangeVolumeOverLastWk(String percentChangeVolumeOverLastWk) {
 		this.percentChangeVolumeOverLastWk = percentChangeVolumeOverLastWk;
 	}
 
-	public long getPreviousWeeksVolume() {
+	public String getPreviousWeeksVolume() {
 		return previousWeeksVolume;
 	}
 
-	public void setPreviousWeeksVolume(long previousWeeksVolume) {
+	public void setPreviousWeeksVolume(String previousWeeksVolume) {
 		this.previousWeeksVolume = previousWeeksVolume;
 	}
 
@@ -149,31 +140,30 @@ public class StockTracker {
 		this.nextWeeksClose = nextWeeksClose;
 	}
 
-	public float getPercentChangeNextWeeksPrice() {
+	public String getPercentChangeNextWeeksPrice() {
 		return percentChangeNextWeeksPrice;
 	}
 
-	public void setPercentChangeNextWeeksPrice(float percentChangeNextWeeksPrice) {
+	public void setPercentChangeNextWeeksPrice(String percentChangeNextWeeksPrice) {
 		this.percentChangeNextWeeksPrice = percentChangeNextWeeksPrice;
 	}
 
-	public short getDaysToNextDividend() {
+	public String getDaysToNextDividend() {
 		return daysToNextDividend;
 	}
 
-	public void setDaysToNextDividend(short daysToNextDividend) {
+	public void setDaysToNextDividend(String daysToNextDividend) {
 		this.daysToNextDividend = daysToNextDividend;
 	}
 
-	public float getPercentReturnNextDividend() {
+	public String getPercentReturnNextDividend() {
 		return percentReturnNextDividend;
 	}
 
-	public void setPercentReturnNextDividend(float percentReturnNextDividend) {
+	public void setPercentReturnNextDividend(String percentReturnNextDividend) {
 		this.percentReturnNextDividend = percentReturnNextDividend;
 	}
-
+	
 	
 
-	
 }

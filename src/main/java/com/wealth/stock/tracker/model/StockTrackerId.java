@@ -7,7 +7,7 @@ public class StockTrackerId implements Serializable {
 	
 	private byte quarter;
 	private String stock;
-	private String date;
+	private Date date;
 	
 	
 	public byte getQuarter() {
@@ -22,12 +22,13 @@ public class StockTrackerId implements Serializable {
 	public void setStock(String stock) {
 		this.stock = stock;
 	}
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	
 	
 	
