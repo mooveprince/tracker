@@ -44,6 +44,8 @@ public class StockTracker {
 	private short daysToNextDividend;
 	
 	private float percentReturnNextDividend;
+	
+	private java.util.Date requestDate;
 
 	public byte getQuarter() {
 		return quarter;
@@ -171,6 +173,14 @@ public class StockTracker {
 
 	public void setPercentReturnNextDividend(float percentReturnNextDividend) {
 		this.percentReturnNextDividend = percentReturnNextDividend;
+	}
+
+	public java.util.Date getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(java.util.Date requestDate) {
+		this.requestDate = requestDate;
 	}
 
 	

@@ -2,6 +2,7 @@ package com.wealth.stock.tracker.batch;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class Processor implements ItemProcessor<StockTrackerInput, StockTracker>
 		stockTracker.setStock(stockTrackerInput.getStock());
 		
 		//converting string into sql date 
-		java.util.Date date=sdf.parse(stockTrackerInput.getDate());
+		Date date=sdf.parse(stockTrackerInput.getDate());
 	    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 	    
 		stockTracker.setDate(sqlDate);
@@ -66,6 +67,7 @@ public class Processor implements ItemProcessor<StockTrackerInput, StockTracker>
 			stockTracker.setPercentReturnNextDividend(Float.parseFloat(stockTrackerInput.getPercentReturnNextDividend()));
 		}
 		
+		stockTracker.setRequestDate(new Date());
 		
 		return stockTracker;
 	}

@@ -17,5 +17,6 @@ CREATE TABLE stock_tracker  (
     percent_change_next_weeks_price REAL,
     days_to_next_dividend SMALLINT,
     percent_return_next_dividend REAL,
+    request_date TIMESTAMP WITH TIME ZONE,
     PRIMARY KEY (quarter, stock, date)
 );
