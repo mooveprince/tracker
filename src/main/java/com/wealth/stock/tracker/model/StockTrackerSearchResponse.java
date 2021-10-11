@@ -6,7 +6,7 @@ import com.wealth.stock.tracker.entity.StockTracker;
 
 public class StockTrackerSearchResponse {
 	
-	public InputRequest inputRequest;
+	public SearchInputRequest inputRequest;
 	public List<StockTracker> stockTracker;
 	public StockTrackerError stockTrackerError;
 	
@@ -23,10 +23,10 @@ public class StockTrackerSearchResponse {
 	public void setStockTrackerError(StockTrackerError stockTrackerError) {
 		this.stockTrackerError = stockTrackerError;
 	}
-	public InputRequest getInputRequest() {
+	public SearchInputRequest getInputRequest() {
 		return inputRequest;
 	}
-	public void setInputRequest(InputRequest inputRequest) {
+	public void setInputRequest(SearchInputRequest inputRequest) {
 		this.inputRequest = inputRequest;
 	}
 	

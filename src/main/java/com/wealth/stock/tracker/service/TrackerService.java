@@ -13,12 +13,12 @@ import com.wealth.stock.tracker.repository.StockTrackerRepository;
 /**
  * @author moove
  * 
- * Service layer for search apis - searchBySymbol now 
+ * Service layer for search/ add apis - searchBySymbol now 
  */
 @Service
-public class SearchService {
+public class TrackerService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(SearchService.class);
+	private static final Logger logger = LoggerFactory.getLogger(TrackerService.class);
 	
 	@Autowired
 	StockTrackerRepository stockTrackerRepo;
@@ -32,6 +32,17 @@ public class SearchService {
 		logger.info("Search has been completed for the symbol {} ", symbol);
 		
 		return stockTrackerList;
+		
+	}
+	
+	
+	public void addTrackerRecord (StockTracker stockTracker) {
+		
+		logger.info("Adding new tracker record");
+		
+		stockTrackerRepo.save(stockTracker);
+		
+		logger.info("Successfully added");
 		
 	}
 

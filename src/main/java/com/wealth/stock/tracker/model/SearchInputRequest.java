@@ -1,6 +1,6 @@
 package com.wealth.stock.tracker.model;
 
-public class InputRequest {
+public class SearchInputRequest {
 	
 	public String symbol;
 
