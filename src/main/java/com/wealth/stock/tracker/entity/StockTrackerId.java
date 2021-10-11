@@ -5,6 +5,7 @@ import java.sql.Date;
 
 public class StockTrackerId implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private byte quarter;
 	private String stock;
 	private Date date;

@@ -1,7 +1,5 @@
 package com.wealth.stock.tracker.model;
 
-import javax.persistence.Id;
-
 public class StockTrackerInput {
 	
 	private byte quarter;

@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.repository.StockTrackerRepository;
 
+/**
+ * @author moove
+ * 
+ * Spring batch writer to persist the data in DB
+ */
 @Component
 public class Writer implements ItemWriter<StockTracker>{
 	

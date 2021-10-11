@@ -1,10 +1,17 @@
 package com.wealth.stock.tracker.model;
 
+
+/**
+ * @author moove
+ * 
+ * Response object for Upload API
+ */
 public class StockTrackerUploadResponse {
 	
 	public String fileName;
 	public long fileSize;
 	public String fileUploadStatus;
+	public StockTrackerError error;
 	
 	public String getFileName() {
 		return fileName;
@@ -24,6 +31,13 @@ public class StockTrackerUploadResponse {
 	public void setFileUploadStatus(String fileUploadStatus) {
 		this.fileUploadStatus = fileUploadStatus;
 	}
+	public StockTrackerError getError() {
+		return error;
+	}
+	public void setError(StockTrackerError error) {
+		this.error = error;
+	}
+	
 	
 	
 

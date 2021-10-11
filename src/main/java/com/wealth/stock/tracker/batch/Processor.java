@@ -11,6 +11,11 @@ import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.model.StockTrackerInput;
 import com.wealth.stock.tracker.util.TrackerUtil;
 
+/**
+ * @author moove
+ * 
+ * Spring batch processor which receives input of uploaded file and process it for entity object
+ */
 @Component
 public class Processor implements ItemProcessor<StockTrackerInput, StockTracker>{
 	

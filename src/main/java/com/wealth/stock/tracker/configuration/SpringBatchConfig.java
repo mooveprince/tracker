@@ -15,17 +15,17 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 
 import com.wealth.stock.tracker.entity.StockTracker;
 import com.wealth.stock.tracker.model.StockTrackerInput;
 
 /**
  * @author moove
- *
+ * 
+ * Spring batch config which executes the job for the defined the step
+ * Step include - Reading file, processing the file, writing the file to DB
  */
 @Configuration
 @EnableBatchProcessing
@@ -62,6 +62,9 @@ public class SpringBatchConfig {
 			.build();
 	}
 	
+	/*
+	 * Flat file reader bean
+	 */
 	@Bean
 	public FlatFileItemReader<StockTrackerInput> fileItemReader() {
 		
@@ -77,7 +80,9 @@ public class SpringBatchConfig {
 		
 	}
 	
-	
+	/*
+	 *  Line Mapper bean to map the row with header
+	 */
 	@Bean
 	public LineMapper<StockTrackerInput> lineMapper() {
 		
