@@ -79,6 +79,12 @@ public class TrackerControllerTest {
 				).andDo(print())
 		        .andExpect(status().isOk());
 		
+		when(trackerService.searchBySymbol(Mockito.any())).thenThrow(new RuntimeException());
+		mockMvc.perform(get(searchEndpoint).param("symbol", "XYZ")
+				.contentType(MediaType.APPLICATION_JSON)
+				).andDo(print())
+		        .andExpect(status().isExpectationFailed());
+		
 	}
 	
 	
@@ -112,7 +118,15 @@ public class TrackerControllerTest {
 			    .contentType("application/json")
 			    ).andDo(print())
 			    .andExpect(status().isExpectationFailed());
-	
+		
+		
+		when(trackerService.addTrackerRecord(Mockito.any())).thenThrow(new RuntimeException());
+		mockMvc.perform(post(addEndpoint)
+				.content(objectMapper.writeValueAsString(stockTrackerInput))
+			    .contentType("application/json")
+			    ).andDo(print())
+			    .andExpect(status().isExpectationFailed());
+		
 		
 	}
 	

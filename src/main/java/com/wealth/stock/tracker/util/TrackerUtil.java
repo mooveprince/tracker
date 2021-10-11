@@ -2,6 +2,9 @@ package com.wealth.stock.tracker.util;
 
 import org.springframework.stereotype.Component;
 
+import com.wealth.stock.tracker.constant.ErrorEnum;
+import com.wealth.stock.tracker.model.StockTrackerError;
+
 @Component
 public class TrackerUtil {
 
@@ -31,6 +34,18 @@ public class TrackerUtil {
 		}
 		
 		return isStringNullOrEmpty;
+		
+	}
+	
+	public static StockTrackerError getError(ErrorEnum errorEnum) {
+		
+		StockTrackerError error = new StockTrackerError();
+		
+		error.setErrorCode(errorEnum.getKey());
+		error.setErrorDescription(errorEnum.getValue());
+		
+		
+		return error;
 		
 	}
 
