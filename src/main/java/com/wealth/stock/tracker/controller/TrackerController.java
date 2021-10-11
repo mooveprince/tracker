@@ -13,6 +13,7 @@ import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -101,17 +102,23 @@ public class TrackerController {
 
 			logger.info("Upload File job is running");
 
-			// Setting the job status in api response
-			uploadResponse.setFileUploadStatus(jobExecution.getStatus().toString());
-			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
-
+			// Getting the job status in api response
+			String status = jobExecution.getStatus().toString();
+			
+			if (status.equalsIgnoreCase("COMPLETED")) {
+				uploadResponse.setFileUploadStatus(status);
+				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
+			} else {
+				uploadResponse.setError(TrackerUtil.getError(ErrorEnum.JOB_FAILURE));
+				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			}
+			
 			logger.info("Upload File job is completed");
 
 		} catch (Exception e) {
 
 			// Error object for upload api response
-			uploadResponse.setError(TrackerUtil.getError(ErrorEnum.JOB_FAILURE));
-
+			uploadResponse.setError(TrackerUtil.getError(ErrorEnum.UPLOAD_FILE_ERROR));
 			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.EXPECTATION_FAILED);
 
 			logger.error("Error occurred in processing file", e);

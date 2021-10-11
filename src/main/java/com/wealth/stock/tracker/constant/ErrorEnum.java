@@ -8,6 +8,7 @@ public enum ErrorEnum {
 	SEARCH_EXCEPTION_OCCURED((short)803, "Error occurred during search"),
 	ADD_TRACKER_ERROR((short)804, "Error in persisting the tracker record"),
 	ADD_EXCEPTION_OCCURED((short)805, "Error occurred during search"),
+	UPLOAD_FILE_ERROR((short)806, "Error in parsing the input file. Please check the template")
 	;
 	
 	private final short key;
