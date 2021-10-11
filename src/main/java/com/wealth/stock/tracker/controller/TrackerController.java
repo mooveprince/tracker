@@ -1,6 +1,7 @@
 package com.wealth.stock.tracker.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,15 +18,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wealth.stock.tracker.constant.ErrorEnum;
+import com.wealth.stock.tracker.entity.StockTracker;
+import com.wealth.stock.tracker.model.InputRequest;
 import com.wealth.stock.tracker.model.StockTrackerError;
 import com.wealth.stock.tracker.model.StockTrackerInput;
+import com.wealth.stock.tracker.model.StockTrackerSearchResponse;
 import com.wealth.stock.tracker.model.StockTrackerUploadResponse;
+import com.wealth.stock.tracker.service.SearchService;
 
 /**
  * @author moove
@@ -37,7 +45,6 @@ import com.wealth.stock.tracker.model.StockTrackerUploadResponse;
 public class TrackerController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TrackerController.class);
-	private static final Short uploadError = 800;
 	
 	@Autowired
 	JobLauncher jobLauncher;
@@ -48,12 +55,16 @@ public class TrackerController {
 	@Autowired
 	FlatFileItemReader<StockTrackerInput> flatFileItemReader;
 	
+	@Autowired
+	SearchService searchService;
+	
 	/*
 	 * Method to handle file upload for stock tracker
 	 */
 	@PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json", value = "/upload")
 	public ResponseEntity<StockTrackerUploadResponse> processUploadedFiles(@RequestPart("file") MultipartFile multipartFile)  {
 		
+		//Response entity object declaration
 		ResponseEntity<StockTrackerUploadResponse> responseEntity = null;
 		HttpHeaders headers = new HttpHeaders();
 		
@@ -63,10 +74,11 @@ public class TrackerController {
 		logger.info("Processing uploaded file of size " + fileName);
 		logger.info("Processing uploaded file of size " + fileSize);
 		
-		//Construct api response object and header
+		//Construct upload api response object and header
 		StockTrackerUploadResponse uploadResponse = new StockTrackerUploadResponse();
 		uploadResponse.setFileName(fileName);
 		uploadResponse.setFileSize(fileSize);
+		StockTrackerError error = null;
 		
 		try {
 			
@@ -90,9 +102,9 @@ public class TrackerController {
 		} catch (Exception e) {
 			
 			//Construct error object for api response
-			StockTrackerError error = new StockTrackerError();
-			error.setErrorDescription("Exception occurred when executing the job");
-			error.setErrorCode(uploadError);
+			error = new StockTrackerError();
+			error.setErrorCode(ErrorEnum.JOB_FAILURE.getKey());
+			error.setErrorDescription(ErrorEnum.JOB_FAILURE.getValue());
 			uploadResponse.setError(error);
 			
 			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.EXPECTATION_FAILED);
@@ -103,6 +115,46 @@ public class TrackerController {
 		
 		return responseEntity;
 		
+		
+	}
+	
+	/*
+	 * Method to get/search the detail of the stock by its ticker
+	 */
+	@GetMapping(produces = "application/json", value = "/search/ticker")
+	public ResponseEntity<StockTrackerSearchResponse> searchByTicker(@RequestParam String symbol) {
+		
+		
+		//Response entity object declaration
+		ResponseEntity<StockTrackerSearchResponse> responseEntity = null;
+		HttpHeaders headers = new HttpHeaders();
+		
+		//Construct generic input request so user know what's the request they sent - In this case, just the ticker
+		InputRequest inputRequest = new InputRequest();
+		inputRequest.setSymbol(symbol);
+		
+		//Construct search api response object
+		StockTrackerSearchResponse stockTrackerSearchResponse = new StockTrackerSearchResponse();
+		stockTrackerSearchResponse.setInputRequest(inputRequest);
+		StockTrackerError error = null;
+		
+		if (symbol == null || symbol.trim().isBlank() ) {
+			error = new StockTrackerError();
+			error.setErrorCode(ErrorEnum.EMPTY_SYMBOL.getKey());
+			error.setErrorDescription(ErrorEnum.EMPTY_SYMBOL.getValue());
+			stockTrackerSearchResponse.setStockTrackerError(error);
+			
+			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.EXPECTATION_FAILED);
+		} else {
+			
+			List<StockTracker> stockTrackerList = searchService.searchBySymbol(symbol);
+			stockTrackerSearchResponse.setStockTracker(stockTrackerList);
+			
+			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
+		}
+		
+		
+		return responseEntity;
 		
 	}
 
