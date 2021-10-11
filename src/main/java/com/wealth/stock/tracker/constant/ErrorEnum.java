@@ -4,7 +4,8 @@ public enum ErrorEnum {
 	
 	JOB_FAILURE((short)800, "Exception occurred when executing the job"),
 	EMPTY_SYMBOL((short)801, "Stock Symbol cannot be empty"),
-	INVALID_INPUT((short)802, "Invalid value found. Please provide valid value for quarter, date and ticker")
+	INVALID_INPUT((short)802, "Invalid value found. Please provide valid value for quarter, date and ticker"),
+	ADD_TRACKER_ERROR((short)803, "Error in persisting the tracker record")
 	;
 	
 	private final short key;

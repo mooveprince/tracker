@@ -36,13 +36,14 @@ public class TrackerService {
 	}
 	
 	
-	public void addTrackerRecord (StockTracker stockTracker) {
+	public StockTracker addTrackerRecord (StockTracker stockTracker) {
 		
 		logger.info("Adding new tracker record");
 		
-		stockTrackerRepo.save(stockTracker);
-		
+		StockTracker persistedRecord = stockTrackerRepo.save(stockTracker);
 		logger.info("Successfully added");
+		
+		return persistedRecord;
 		
 	}
 

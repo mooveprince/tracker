@@ -69,6 +69,8 @@ public class TrackerController {
 	@PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json", value = "/upload")
 	public ResponseEntity<StockTrackerUploadResponse> processUploadedFiles(@RequestPart("file") MultipartFile multipartFile)  {
 		
+		logger.info("Entering processUploadedFiles");
+		
 		//Response entity object declaration
 		ResponseEntity<StockTrackerUploadResponse> responseEntity = null;
 		HttpHeaders headers = new HttpHeaders();
@@ -196,12 +198,25 @@ public class TrackerController {
 			
 			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.EXPECTATION_FAILED);
 			
-			logger.error("Invlaid input sent for add the tracker record");
+			logger.error("Invalid input sent for add the tracker record");
 			
 		} else {
-			trackerService.addTrackerRecord(stockTracker);
-			stockTrackerAddResponse.setAddStockTrackerStatus("SUCCESSFULLY ADDED");
-			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.OK);
+			StockTracker persistedRecord = trackerService.addTrackerRecord(stockTracker);
+			
+			if (persistedRecord != null) {
+				stockTrackerAddResponse.setAddStockTrackerStatus("SUCCESSFULLY ADDED");
+				responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.OK);
+			} else {
+				error = new StockTrackerError();
+				error.setErrorCode(ErrorEnum.ADD_TRACKER_ERROR.getKey());
+				error.setErrorDescription(ErrorEnum.ADD_TRACKER_ERROR.getValue());
+				stockTrackerAddResponse.setStockTrackerError(error);
+				
+				responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.EXPECTATION_FAILED);
+				
+				logger.error("Invlaid input sent for add the tracker record");
+			}
+			
 			
 		}
 		
