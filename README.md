@@ -34,14 +34,14 @@ http://localhost:8080/h2-console
 
 ### Result
 
-#####File Upload
+##### File Upload
 
 ![](documentation/images/file_upload.png)
 
-#####Search Stock
+##### Search Stock
 
 ![](documentation/images/search.png)
 
-#####Add Stock
+##### Add Stock
 
 ![](documentation/images/add.png)
