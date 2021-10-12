@@ -7,13 +7,13 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -102,10 +102,10 @@ public class TrackerController {
 
 			logger.info("Upload File job is running");
 
-			// Getting the job status in api response
+			// checking the job status in api response
 			String status = jobExecution.getStatus().toString();
 			
-			if (status.equalsIgnoreCase("COMPLETED")) {
+			if (jobExecution.getStatus().equals(BatchStatus.COMPLETED)) {
 				uploadResponse.setFileUploadStatus(status);
 				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 			} else {

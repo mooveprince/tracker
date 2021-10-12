@@ -15,7 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,10 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,8 +61,45 @@ public class TrackerControllerTest {
 	@MockBean
 	FlatFileItemReader<StockTrackerInput> flatFileItemReader;
 	
+	static final String fileUploadEndpoint = "/tracker/upload";
 	static final String searchEndpoint = "/tracker/search";
 	static final String addEndpoint = "/tracker/add";
+	
+	@Test
+	public void processUploadedFilesTest() throws Exception {
+		
+		MockMultipartFile multipartFile = new MockMultipartFile ("file", "testdata".getBytes());
+		
+		JobExecution jobExecution = new JobExecution(12345l);
+		jobExecution.setStatus(BatchStatus.COMPLETED);
+		
+		when (jobLauncher.run(Mockito.any(), Mockito.any())).thenReturn(jobExecution);
+		
+		mockMvc.perform(MockMvcRequestBuilders
+				.multipart(fileUploadEndpoint)
+				.file(multipartFile)
+				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk());
+		
+		jobExecution.setStatus(BatchStatus.FAILED);
+				
+		mockMvc.perform(MockMvcRequestBuilders
+				.multipart(fileUploadEndpoint)
+				.file(multipartFile)
+				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isExpectationFailed());
+		
+		when (jobLauncher.run(Mockito.any(), Mockito.any())).thenThrow(new RuntimeException());
+		mockMvc.perform(MockMvcRequestBuilders
+				.multipart(fileUploadEndpoint)
+				.file(multipartFile)
+				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isExpectationFailed());
+		
+	}
 	
 	@Test
 	public void searchByTickerTest () throws Exception {

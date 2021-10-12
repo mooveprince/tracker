@@ -66,7 +66,7 @@ public class SpringBatchConfig {
 	 * Flat file reader bean
 	 */
 	@Bean
-	public FlatFileItemReader<StockTrackerInput> fileItemReader() throws Exception {
+	public FlatFileItemReader<StockTrackerInput> fileItemReader() {
 		
 		FlatFileItemReader<StockTrackerInput> flatFileItemReader = new FlatFileItemReader<>();
 		
