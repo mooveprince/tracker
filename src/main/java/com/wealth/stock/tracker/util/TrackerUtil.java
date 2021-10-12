@@ -20,7 +20,9 @@ public class TrackerUtil {
 		}
 	}
 	
-	
+	/*
+	 * To check whether the all the arguments are not null or empty
+	 */
 	public static boolean isStringNullOrEmpty(String... elements) {
 		
 		boolean isStringNullOrEmpty = true;
@@ -37,6 +39,9 @@ public class TrackerUtil {
 		
 	}
 	
+	/*
+	 * Construct error object based on enum
+	 */
 	public static StockTrackerError getError(ErrorEnum errorEnum) {
 		
 		StockTrackerError error = new StockTrackerError();
