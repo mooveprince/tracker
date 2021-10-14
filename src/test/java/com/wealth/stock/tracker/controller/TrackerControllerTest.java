@@ -89,7 +89,7 @@ public class TrackerControllerTest {
 				.file(multipartFile)
 				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
-				.andExpect(status().isExpectationFailed());
+				.andExpect(status().isOk());
 		
 		when (jobLauncher.run(Mockito.any(), Mockito.any())).thenThrow(new RuntimeException());
 		mockMvc.perform(MockMvcRequestBuilders
@@ -97,7 +97,7 @@ public class TrackerControllerTest {
 				.file(multipartFile)
 				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
-				.andExpect(status().isExpectationFailed());
+				.andExpect(status().isOk());
 		
 	}
 	
@@ -113,7 +113,7 @@ public class TrackerControllerTest {
 		mockMvc.perform(get(searchEndpoint).param("symbol", "")
 				.contentType(MediaType.APPLICATION_JSON)
 				).andDo(print())
-		        .andExpect(status().isExpectationFailed());
+		        .andExpect(status().isOk());
 		
 		mockMvc.perform(get(searchEndpoint).param("symbol", "ABC")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +124,7 @@ public class TrackerControllerTest {
 		mockMvc.perform(get(searchEndpoint).param("symbol", "XYZ")
 				.contentType(MediaType.APPLICATION_JSON)
 				).andDo(print())
-		        .andExpect(status().isExpectationFailed());
+		        .andExpect(status().isOk());
 		
 	}
 	
@@ -141,7 +141,7 @@ public class TrackerControllerTest {
 				.content(objectMapper.writeValueAsString(stockTrackerInput))
 			    .contentType("application/json")
 			    ).andDo(print())
-			    .andExpect(status().isExpectationFailed());
+			    .andExpect(status().isOk());
 		
 		stockTrackerInput.setQuarter((byte)1);
 		stockTrackerInput.setStock("ABC");
@@ -158,7 +158,7 @@ public class TrackerControllerTest {
 				.content(objectMapper.writeValueAsString(stockTrackerInput))
 			    .contentType("application/json")
 			    ).andDo(print())
-			    .andExpect(status().isExpectationFailed());
+			    .andExpect(status().isOk());
 		
 		
 		when(trackerService.addTrackerRecord(Mockito.any())).thenThrow(new RuntimeException());
@@ -166,7 +166,7 @@ public class TrackerControllerTest {
 				.content(objectMapper.writeValueAsString(stockTrackerInput))
 			    .contentType("application/json")
 			    ).andDo(print())
-			    .andExpect(status().isExpectationFailed());
+			    .andExpect(status().isOk());
 		
 		
 	}

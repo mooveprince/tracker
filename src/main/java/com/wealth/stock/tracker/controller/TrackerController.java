@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,7 @@ import com.wealth.stock.tracker.util.TrackerUtil;
  */
 @RestController
 @RequestMapping("/tracker")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TrackerController {
 
 	private static final Logger logger = LoggerFactory.getLogger(TrackerController.class);
@@ -110,7 +112,7 @@ public class TrackerController {
 				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 			} else {
 				uploadResponse.setError(TrackerUtil.getError(ErrorEnum.JOB_FAILURE));
-				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.EXPECTATION_FAILED);
+				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 			}
 			
 			logger.info("Upload File job is completed");
@@ -119,7 +121,7 @@ public class TrackerController {
 
 			// Error object for upload api response
 			uploadResponse.setError(TrackerUtil.getError(ErrorEnum.UPLOAD_FILE_ERROR));
-			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 
 			logger.error("Error occurred in processing file", e);
 
@@ -153,7 +155,7 @@ public class TrackerController {
 		if (TrackerUtil.isStringNullOrEmpty(symbol)) {
 			stockTrackerSearchResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.EMPTY_SYMBOL));
 
-			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
 			logger.error("Empty string has been passed for stock ticker");
 
 			return responseEntity;
@@ -172,7 +174,7 @@ public class TrackerController {
 			// Error object for search api response
 			stockTrackerSearchResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.SEARCH_EXCEPTION_OCCURED));
 
-			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
 
 			logger.error("Error occurred in processing file", e);
 
@@ -210,7 +212,7 @@ public class TrackerController {
 		if (quarter <= 0 || TrackerUtil.isStringNullOrEmpty(stock) || date == null) {
 			stockTrackerAddResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.INVALID_INPUT));
 
-			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.OK);
 
 			logger.error("Invalid input sent for add the tracker record");
 
@@ -229,7 +231,7 @@ public class TrackerController {
 			} else {
 				stockTrackerAddResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.ADD_TRACKER_ERROR));
 
-				responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.EXPECTATION_FAILED);
+				responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.OK);
 
 				logger.error("Invalid input sent for add the tracker record");
 			}
@@ -238,7 +240,7 @@ public class TrackerController {
 			// error object for search api response
 			stockTrackerAddResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.ADD_EXCEPTION_OCCURED));
 
-			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(stockTrackerAddResponse, headers, HttpStatus.OK);
 
 			logger.error("Error occurred in adding tracker record ", e);
 		}
