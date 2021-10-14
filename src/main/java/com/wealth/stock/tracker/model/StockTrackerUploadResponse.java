@@ -11,7 +11,7 @@ public class StockTrackerUploadResponse {
 	public String fileName;
 	public long fileSize;
 	public String fileUploadStatus;
-	public StockTrackerError error;
+	public StockTrackerError stockTrackerError;
 	
 	public String getFileName() {
 		return fileName;
@@ -31,12 +31,13 @@ public class StockTrackerUploadResponse {
 	public void setFileUploadStatus(String fileUploadStatus) {
 		this.fileUploadStatus = fileUploadStatus;
 	}
-	public StockTrackerError getError() {
-		return error;
+	public StockTrackerError getStockTrackerError() {
+		return stockTrackerError;
 	}
-	public void setError(StockTrackerError error) {
-		this.error = error;
+	public void setStockTrackerError(StockTrackerError stockTrackerError) {
+		this.stockTrackerError = stockTrackerError;
 	}
+	
 	
 	
 	

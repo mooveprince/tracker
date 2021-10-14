@@ -111,7 +111,8 @@ public class TrackerController {
 				uploadResponse.setFileUploadStatus(status);
 				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 			} else {
-				uploadResponse.setError(TrackerUtil.getError(ErrorEnum.JOB_FAILURE));
+				uploadResponse.setFileUploadStatus(status);
+				uploadResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.JOB_FAILURE));
 				responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 			}
 			
@@ -120,7 +121,8 @@ public class TrackerController {
 		} catch (Exception e) {
 
 			// Error object for upload api response
-			uploadResponse.setError(TrackerUtil.getError(ErrorEnum.UPLOAD_FILE_ERROR));
+			uploadResponse.setFileUploadStatus(BatchStatus.FAILED.toString());
+			uploadResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.UPLOAD_FILE_ERROR));
 			responseEntity = new ResponseEntity<>(uploadResponse, headers, HttpStatus.OK);
 
 			logger.error("Error occurred in processing file", e);
@@ -166,14 +168,21 @@ public class TrackerController {
 
 			List<StockTracker> stockTrackerList = trackerService.searchBySymbol(symbol);
 			stockTrackerSearchResponse.setStockTracker(stockTrackerList);
+			
+			if (stockTrackerList != null && !stockTrackerList.isEmpty()) {
+				responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
+			} else {
+				stockTrackerSearchResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.SYMBOL_NOT_FOUND));
+				responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
 
-			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
+				logger.error("searched stock not available in tracker");
+			}
+			
 
 		} catch (Exception e) {
 
 			// Error object for search api response
 			stockTrackerSearchResponse.setStockTrackerError(TrackerUtil.getError(ErrorEnum.SEARCH_EXCEPTION_OCCURED));
-
 			responseEntity = new ResponseEntity<>(stockTrackerSearchResponse, headers, HttpStatus.OK);
 
 			logger.error("Error occurred in processing file", e);
